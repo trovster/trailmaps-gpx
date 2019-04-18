@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "git subtree push --prefix subfolder-name-here origin gh-pages"
+    "deploy": "sh deploy.sh"
   },
   "dependencies": {
     "@vue/cli": "^3.6.3",
