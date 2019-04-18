@@ -1,4 +1,4 @@
-# ![TrailMaps.co.uk](public/assets/logo.png)
+# ![TrailMaps.co.uk](src/assets/logo.png)
 
 ## Project setup
 

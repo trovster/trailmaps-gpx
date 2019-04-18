@@ -1,41 +1,35 @@
 <template>
   <div id="app">
     <h1>
-      <a href>
-        <img src="assets/logo.png" alt="TrailMaps.co.uk GPX" title>
+      <a href="">
+        <img src="./assets/logo.png" alt="TrailMaps.co.uk GPX" title="" />
       </a>
     </h1>
   </div>
 </template>
 
 <script>
-import strava from "strava";
-import gpxParse from "gpx-parse";
+// import strava from 'strava'
+// import gpxParse from 'gpx-parse'
+// import gpx from './assets/example.gpx'
 
 export default {
-  name: "TrailMaps",
+  name: 'TrailMaps',
   components: {},
   computed: {},
-  mounted() {
-    console.log(strava);
-    console.log(gpxParse);
-  },
+  mounted() {},
   methods: {}
   
 };
 </script>
 
-<style>
-html,
-body {
-  padding: 0;
-  margin: 0;
-}
+<style lang="scss">
 h1 {
   margin: 20px;
-}
-h1 img {
-  display: block;
-  max-width: 120px;
+
+  img {
+    display: block;
+    max-width: 120px;
+  }
 }
 </style>
