@@ -1,4 +1,4 @@
-# TrailMaps.co.uk GPX
+# ![TrailMaps.co.uk](public/assets/logo.png)
 
 ## Project setup
 ```
