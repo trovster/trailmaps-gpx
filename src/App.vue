@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>
-      <a href>
+      <a href="/">
         <img src="./assets/logo.png" alt="TrailMaps.co.uk GPX" title>
       </a>
     </h1>
@@ -13,9 +13,5 @@
 <script>
 export default {
   name: "App",
-  components: {},
-  data() {
-    return {}
-  },
 };
 </script>

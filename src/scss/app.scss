@@ -30,16 +30,34 @@ h2 {
     font-size: 2em;
     font-weight: 700;
     text-transform: uppercase;
-    text-align: center;
+}
+h3 {
+    margin: 0 0 1em;
+    font-family: "DIN Next", sans-serif;
+    font-size: 1.2em;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 p {
+    margin: 0 0 1em;
     color: #3f3f3f;
 }
 
 .page {
-    max-width: 716px;
     padding: 55px;
     margin: 0 auto;
     border-top: 1px solid #e8e9eb;
     text-align: center;
+
+    > * {
+        max-width: 716px;
+        margin-left: auto; margin-right: auto;
+    }
+
+    hr {
+        margin: 55px auto;
+        border: 0 solid #e8e9eb;
+        border-width: 1px 0 0;
+        background: transparent;
+    }
 }

@@ -20,8 +20,8 @@
       :bar-width="1"
       :grow-duration="1"
       width="500"
-      height="150">
-    </bars>
+      height="150"
+    ></bars>
   </div>
 </template>
 
@@ -39,7 +39,7 @@ export default {
   components: {
     GoogleMapLoader,
     GoogleMapLine,
-    Bars
+    Bars,
   },
   data() {
     return {
@@ -56,20 +56,24 @@ export default {
         this.name = track.name[0];
 
         for (let id in track.trkseg[0].trkpt) {
-          id = parseInt(id, 10)
-          const point = track.trkseg[0].trkpt[id]
-          const previousPoint = track.trkseg[0].trkpt[id - 1] || track.trkseg[0].trkpt[0]
+          id = parseInt(id, 10);
+          const point = track.trkseg[0].trkpt[id];
+          const previousPoint =
+            track.trkseg[0].trkpt[id - 1] || track.trkseg[0].trkpt[0];
 
           this.data.push(parseFloat(point.ele[0]));
           this.lines.push({
             id: id + 1,
-            path: [{
-              lat: parseFloat(point.$.lat),
-              lng: parseFloat(point.$.lon),
-            }, {
-              lat: parseFloat(previousPoint.$.lat),
-              lng: parseFloat(previousPoint.$.lon),
-            }]
+            path: [
+              {
+                lat: parseFloat(point.$.lat),
+                lng: parseFloat(point.$.lon)
+              },
+              {
+                lat: parseFloat(previousPoint.$.lat),
+                lng: parseFloat(previousPoint.$.lon)
+              }
+            ]
           });
         }
       });
@@ -79,12 +83,12 @@ export default {
     mapConfig() {
       return {
         ...mapSettings,
-        center: this.mapCenter,
+        center: this.mapCenter
       };
     },
 
     mapCenter() {
-      return { lat: 52.7804310, lng: -1.9932180 };
+      return { lat: 52.780431, lng: -1.993218 };
     }
   }
 };
@@ -92,26 +96,31 @@ export default {
 
 <style type="sass" scoped>
 body {
-    overflow: hidden;
+  overflow: hidden;
 }
 #map {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 h1 {
-    position: absolute;
-    top: 15px; left: 55px;
+  position: absolute;
+  top: 15px;
+  left: 55px;
 }
 h2 {
-    position: absolute;
-    top: 55px;
-    right: 55px;
-    z-index: 100;
-    display: none;
+  position: absolute;
+  top: 55px;
+  right: 55px;
+  z-index: 100;
+  display: none;
 }
 svg {
-    position: absolute;
-    bottom: -8px; right: 0;
-    z-index: 100;
+  position: absolute;
+  bottom: -8px;
+  right: 0;
+  z-index: 100;
 }
 </style>
