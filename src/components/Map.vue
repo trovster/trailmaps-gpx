@@ -18,7 +18,9 @@
       :data="this.data"
       :gradient="this.gradient"
       :bar-width="1"
-      :grow-duration="1">
+      :grow-duration="1"
+      width="500"
+      height="150">
     </bars>
   </div>
 </template>
@@ -48,7 +50,7 @@ export default {
     };
   },
   beforeMount() {
-    axios.get("../assets/example.gpx").then(response => {
+    axios.get("./assets/example.gpx").then(response => {
       new xml2js.Parser().parseString(response.data, (error, result) => {
         const track = result.gpx.trk[0];
         this.name = track.name[0];
@@ -98,20 +100,18 @@ body {
 }
 h1 {
     position: absolute;
-    top: 15px;
-    left: 55px;
+    top: 15px; left: 55px;
 }
 h2 {
     position: absolute;
     top: 55px;
     right: 55px;
     z-index: 100;
+    display: none;
 }
 svg {
     position: absolute;
-    bottom: -50px;
-    right: -20px;
+    bottom: -8px; right: 0;
     z-index: 100;
-    width: 500px;
 }
 </style>
