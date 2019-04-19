@@ -1,4 +1,4 @@
-import colorPalette from '@/constants/colorPalette'
+import colorPalette from '@/config/color'
 
 const {
     COLOR_POINT,

@@ -1,7 +1,8 @@
 <script>
-import { LINE_PATH_CONFIG } from "@/constants/mapSettings";
+import { LINE_PATH_CONFIG } from "@/config/map";
 
 export default {
+  name: "GoogleMapLine",
   props: {
     google: {
       type: Object,

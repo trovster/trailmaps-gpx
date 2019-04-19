@@ -11,6 +11,7 @@
 import GoogleMapsApiLoader from "google-maps-api-loader";
 
 export default {
+  name: "GoogleMapLoader",
   props: {
     mapConfig: Object,
     apiKey: String
