@@ -1,6 +1,14 @@
 {
   "name": "TrailMaps-GPX",
   "version": "0.1.0",
+  "description": "Convert your rides on Strava in to beautiful works on arts.",
+  "author": "Trevor Morris <trovster@gmail.com>",
+  "keywords": [
+    "strava",
+    "prints",
+    "maps",
+    "cycling"
+  ],
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -22,6 +30,7 @@
     "strava": "0.0.2",
     "vue": "^2.6.10",
     "vue-resource": "^1.5.1",
+    "vue-router": "^3.0.6",
     "vuebars": "^0.1.3",
     "vuetrend": "^0.3.2",
     "vuex": "^3.0.1",

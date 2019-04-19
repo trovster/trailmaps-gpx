@@ -1,5 +1,8 @@
 # ![TrailMaps.co.uk](src/assets/logo.png)
 
+A project to allow you to create beautiful works of art using your [Strava](https://www.strava.com) activities.
+Design your own [TrailMaps](https://trailmaps.co.uk).
+
 ## Project setup
 
 ```
@@ -28,4 +31,11 @@ npm run test
 
 ```
 npm run lint
+```
+```
+
+### Deploy to GitHub pages
+
+```
+npm run deploy
 ```
