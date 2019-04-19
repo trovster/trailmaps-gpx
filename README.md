@@ -32,7 +32,6 @@ npm run test
 ```
 npm run lint
 ```
-```
 
 ### Deploy to GitHub pages
 
