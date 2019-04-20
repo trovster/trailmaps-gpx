@@ -9,4 +9,7 @@ new Vue({
     store,
     router,
     render: h => h(App),
+    beforeCreate() {
+        store.commit("initialiseStore")
+    },
 }).$mount("#app")

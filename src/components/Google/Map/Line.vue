@@ -14,14 +14,21 @@ export default {
         },
         path: {
             type: Array,
-            required: true,
+            required: false,
+            default: () => {
+                return []
+            },
+        },
+        polyline: {
+            type: String,
+            required: false,
         },
     },
 
     mounted() {
         new this.google.maps.Polyline({
             clickable: false,
-            path: this.path,
+            path: this.polyline ? this.google.maps.geometry.encoding.decodePath(this.polyline) : this.path,
             map: this.map,
             ...LINE_PATH_CONFIG,
         })

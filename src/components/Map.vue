@@ -5,9 +5,7 @@
     <GoogleMapLoader :mapConfig="mapConfig" apiKey="AIzaSyAYKX8_TSjY6LNQFQTPFXSPlldXlQhUA0Q">
       <template slot-scope="{ google, map }">
         <GoogleMapLine
-          v-for="line in lines"
-          :key="line.id"
-          :path.sync="line.path"
+          :polyline.sync="polyline"
           :google="google"
           :map="map"
         />
@@ -28,7 +26,10 @@
 <script>
 import GoogleMapLoader from "./Google/Map/Loader"
 import GoogleMapLine from "./Google/Map/Line"
+
+import { mapGetters } from "vuex"
 import { mapSettings } from "@/config/map"
+import stravaConfig from "@/config/strava"
 
 import axios from "axios"
 import xml2js from "xml2js"
@@ -41,57 +42,77 @@ export default {
         GoogleMapLine,
         Bars,
     },
-    data() {
-        return {
-            gradient: ["#6fa8dc", "#42b983", "#2c3e50"],
-            name: "",
-            data: [],
-            lines: [],
-        }
-    },
-    beforeMount() {
-        axios.get("./assets/example.gpx").then(response => {
-            new xml2js.Parser().parseString(response.data, (error, result) => {
-                const track = result.gpx.trk[0]
-                this.name = track.name[0]
-
-                for (let id in track.trkseg[0].trkpt) {
-                    id = parseInt(id, 10)
-                    const point = track.trkseg[0].trkpt[id]
-                    const previousPoint = track.trkseg[0].trkpt[id - 1] || track.trkseg[0].trkpt[0]
-
-                    this.data.push(parseFloat(point.ele[0]))
-                    this.lines.push({
-                        id: id + 1,
-                        path: [
-                            {
-                                lat: parseFloat(point.$.lat),
-                                lng: parseFloat(point.$.lon),
-                            },
-                            {
-                                lat: parseFloat(previousPoint.$.lat),
-                                lng: parseFloat(previousPoint.$.lon),
-                            },
-                        ],
-                    })
-                }
-            })
-        })
-    },
     computed: {
+        ...mapGetters({
+            authenticated: "authenticated",
+            accessToken: "stravaAccessToken",
+        }),
         mapConfig() {
             return {
                 ...mapSettings,
                 center: this.mapCenter,
             }
         },
-
         mapCenter() {
             return {
                 lat: 52.780431,
                 lng: -1.993218,
             }
         },
+    },
+    data() {
+        return {
+            gradient: ["#6fa8dc", "#42b983", "#2c3e50"],
+            name: "",
+            data: [],
+            lines: [],
+            polyline: "",
+            api: new require("strava")({
+                client_id: stravaConfig.client_id,
+                client_secret: stravaConfig.client_secret,
+            }),
+        }
+    },
+    async beforeMount() {
+        if (this.$route.params.id) {
+            if (this.authenticated) {
+                this.api.config.access_token = this.accessToken
+                await this.api.activities.get(this.$route.params.id, async (error, activity) => {
+                    this.polyline = activity.map.polyline
+                    console.log(activity)
+                })
+            } else {
+                this.$router.push("/")
+            }
+        } else {
+            axios.get("./assets/example.gpx").then(response => {
+                new xml2js.Parser().parseString(response.data, (error, result) => {
+                    const track = result.gpx.trk[0]
+                    this.name = track.name[0]
+
+                    for (let id in track.trkseg[0].trkpt) {
+                        id = parseInt(id, 10)
+                        const point = track.trkseg[0].trkpt[id]
+                        const previousPoint = track.trkseg[0].trkpt[id - 1] || track.trkseg[0].trkpt[0]
+
+                        this.data.push(parseFloat(point.ele[0]))
+                        this.lines.push({
+                            id: id + 1,
+                            path: [
+                                {
+                                    lat: parseFloat(point.$.lat),
+                                    lng: parseFloat(point.$.lon),
+                                },
+                                {
+                                    lat: parseFloat(previousPoint.$.lat),
+                                    lng: parseFloat(previousPoint.$.lon),
+                                },
+                            ],
+                        })
+                    }
+                })
+            })
+        }
     },
 }
 </script>

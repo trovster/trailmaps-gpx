@@ -10,19 +10,24 @@
             <p>Name: {{ this.user.firstname }} {{ this.user.lastname }}</p>
             <p>City: {{ this.user.city }}</p>
             <p>Country: {{ this.user.country }}</p>
+            <router-link :to="{ name: 'logout'}" class="logout">Logout</router-link>
 
             <div class="activities" v-if="this.activities.length > 0">
                 <h4>Activities</h4>
                 <ul>
-                    <li v-for="activity in this.activities" :key="activity.id">
-                        <a :href="activity.id">{{ activity.name}}</a>
+                    <li v-for="activity in this.activities" :key="activity.id" class="activity">
+                        <router-link :to="{ name: 'map', params: { id: activity.id }}">
+                            <span class="activity--name">{{ activity.name }}</span>
+                            <time class="activity--start">{{ activity.start_date }}</time>
+                            <span class="activity--distance">{{ activity.distance }}</span>
+                        </router-link>
                     </li>
                 </ul>
             </div>
         </div>
 
         <a :href="login()" v-if="!this.user" class="button button--strava">Login with Strava</a>
-        <router-link :to="{ name: 'map'}" class="button button--view">View example map</router-link>
+        <router-link :to="{ name: 'map-example'}" class="button button--view">View example map</router-link>
 
     </div>
 </template>
@@ -33,32 +38,32 @@ import stravaConfig from "@/config/strava"
 
 export default {
     name: "Homepage",
+    computed: {
+        ...mapGetters({
+            authenticated: "authenticated",
+            accessToken: "stravaAccessToken",
+            user: "user",
+        }),
+    },
     data() {
         return {
             api: new require("strava")({
                 client_id: stravaConfig.client_id,
                 client_secret: stravaConfig.client_secret,
-                redirect_uri: window.location.href,
-                access_token: stravaConfig.access_token, // code?
             }),
-            user: null,
             activities: [],
         }
     },
     mounted() {
-        // this.api.athlete.get((error, user) => this.user = user)
+        if (this.authenticated) {
+            this.api.config.access_token = this.accessToken
 
-        // this.api.athlete.activities.get({
-        //     per_page: 5
-        // }, (error, activities) => {
-        //     this.activities = activities
-        //     console.log(activities)
-        // })
-    },
-    computed: {
-        ...mapGetters([
-            "authorisation",
-        ]),
+            this.api.athlete.activities.get({
+                per_page: 5,
+            }, (error, activities) => {
+                this.activities = activities
+            })
+        }
     },
     methods: {
         login() {
@@ -78,7 +83,67 @@ export default {
 
 <style lang="scss">
 .avatar {
-    margin-bottom: 15px;
+    position: absolute;
+    top: 15px;
+    right: 55px;
+    max-width: 110px;
     border-radius: 100%;
+}
+.logout {
+    font-size: 0.8em;
+    color: #aaa;
+    text-transform: none;
+    text-decoration: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: #777;
+        text-decoration: underline;
+    }
+}
+.activities {
+    margin: 20px 0; padding: 20px 0 0;
+    border-bottom: 1px solid #e8e9eb;
+}
+.activity {
+    position: relative;
+    overflow: hidden;
+    clear: both;
+    margin: 0 0 10px;
+    padding: 15px 0 0;
+    border-top: 1px solid #e8e9eb;
+    text-align: left;
+
+    a {
+        position: relative;
+        overflow: hidden;
+        clear: both;
+        display: block;
+        color: #000;
+        text-decoration: none;
+
+        &:hover,
+        &:focus,
+        &:active {
+            .activity--name {
+                font-weight: 700;
+            }
+        }
+    }
+    &--start {
+        float: right;
+    }
+    &--distance {
+        color: #ccc;
+
+        &:before {
+            content: "(";
+            margin-left: 10px;
+        }
+        &:after {
+            content: ")";
+        }
+    }
 }
 </style>

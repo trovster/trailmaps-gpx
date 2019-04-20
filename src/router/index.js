@@ -3,6 +3,7 @@ import Router from "vue-router"
 
 import Homepage from "@/components/Homepage"
 import Login from "@/components/Login"
+import Logout from "@/components/Logout"
 import Map from "@/components/Map"
 
 Vue.use(Router)
@@ -17,7 +18,12 @@ export default new Router({
             component: Homepage,
         },
         {
-            path: "/map",
+            path: "/map-example",
+            name: "map-example",
+            component: Map,
+        },
+        {
+            path: "/map/:id",
             name: "map",
             component: Map,
             // beforeEnter: (to, from, next) => {
@@ -25,9 +31,14 @@ export default new Router({
             // },
         },
         {
-            path: "login",
+            path: "/login",
             name: "login",
             component: Login,
+        },
+        {
+            path: "/logout",
+            name: "logout",
+            component: Logout,
         },
     ],
 })
