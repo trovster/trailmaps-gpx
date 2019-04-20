@@ -5,9 +5,12 @@
     <GoogleMapLoader :mapConfig="mapConfig" apiKey="AIzaSyAYKX8_TSjY6LNQFQTPFXSPlldXlQhUA0Q">
       <template slot-scope="{ google, map }">
         <GoogleMapLine
-          :polyline.sync="polyline"
-          :google="google"
-          :map="map"
+            v-for="line in lines"
+            :key="line.id"
+            :path.sync="line.path"
+            :polyline.sync="polyline"
+            :google="google"
+            :map="map"
         />
       </template>
     </GoogleMapLoader>
