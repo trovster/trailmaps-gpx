@@ -22,7 +22,7 @@
         </div>
 
         <a :href="login()" v-if="!this.user" class="button button--strava">Login with Strava</a>
-        <a href="/map" v-if="!this.user" class="button button--view">View example map</a>
+        <a :href="map()" v-if="!this.user" class="button button--view">View example map</a>
     </div>
 </template>
 
@@ -70,6 +70,9 @@ export default {
             }
 
             return this.api.config.oauth_base + "?" + Object.keys(params).map(key => key + "=" + params[key]).join("&")
+        },
+        map() {
+            return process.env.BASE_URL + "/map"
         },
     },
 }
