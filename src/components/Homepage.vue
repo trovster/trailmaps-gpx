@@ -16,13 +16,13 @@
                 <ul>
                     <li v-for="activity in this.activities" :key="activity.id">
                         <a :href="activity.id">{{ activity.name}}</a>
-                        distance
                     </li>
                 </ul>
             </div>
         </div>
 
-        <a :href="login()" v-if="!this.user" class="button">Login with Strava</a>
+        <a :href="login()" v-if="!this.user" class="button button--strava">Login with Strava</a>
+        <a href="/map" v-if="!this.user" class="button button--view">View example map</a>
     </div>
 </template>
 
@@ -42,7 +42,7 @@ export default {
             }),
             user: null,
             activities: [],
-        };
+        }
     },
     mounted() {
         // this.api.athlete.get((error, user) => this.user = user)
@@ -56,7 +56,7 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'authorisation'
+            "authorisation",
         ]),
     },
     methods: {
@@ -68,15 +68,14 @@ export default {
                 "approval_prompt": "auto",
                 "scope": "read,activity:read",
             }
-            console.log(this.authorisation)
 
-            return this.api.config.oauth_base + '?' + Object.keys(params).map(key => key + '=' + params[key]).join('&')
-        }
-    }
+            return this.api.config.oauth_base + "?" + Object.keys(params).map(key => key + "=" + params[key]).join("&")
+        },
+    },
 }
 </script>
 
-<style type="sass" scoped>
+<style lang="scss">
 .avatar {
     margin-bottom: 15px;
     border-radius: 100%;

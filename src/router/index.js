@@ -1,28 +1,29 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue"
+import Router from "vue-router"
 
-import Homepage from '@/components/Homepage'
-import Map from '@/components/Map'
-import Login from '@/components/Login'
+import Homepage from "@/components/Homepage"
+import Login from "@/components/Login"
+import Map from "@/components/Map"
 
 Vue.use(Router)
 
 export default new Router({
-    mode: 'history',
+    base: process.env.BASE_URL,
+    mode: "history",
     routes: [
         {
-            path: '/',
-            name: 'homepage',
+            path: "/",
+            name: "homepage",
             component: Homepage,
         },
         {
-            path: '/map',
-            name: 'map',
+            path: "/map",
+            name: "map",
             component: Map,
         },
         {
-            path: '/login',
-            name: 'login',
+            path: "login",
+            name: "login",
             component: Login,
         },
     ],

@@ -1,12 +1,12 @@
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'production' ? '/trailmaps-gpx/' : '/',
+    publicPath: process.env.NODE_ENV === "production" ? "/trailmaps-gpx/" : "/",
 
     configureWebpack: {
         module: {
             rules: [{
                 test: /\.gpx$/i,
                 use: [{
-                    loader: 'file-loader',
+                    loader: "file-loader",
                 }],
             }],
         },
@@ -15,7 +15,10 @@ module.exports = {
     css: {
         loaderOptions: {
             sass: {
-                data: `@import "reset-css";`
+                data: "@import \"@/scss/app.scss\";",
+                options: {
+                    sourceMap: false,
+                },
             },
         },
     },

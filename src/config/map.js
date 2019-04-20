@@ -1,4 +1,4 @@
-import colorPalette from '@/config/color'
+import colorPalette from "@/config/color"
 
 const {
     COLOR_POINT,
@@ -6,7 +6,7 @@ const {
     COLOR_BORDERS,
     COLOR_WATER,
     COLOR_LINE,
-    COLOR_POINT_FILL
+    COLOR_POINT_FILL,
 } = colorPalette
 
 const COLORS = {
@@ -15,7 +15,7 @@ const COLORS = {
     LINE: COLOR_LINE,
     POINT: COLOR_POINT,
     POINT_FILL: COLOR_POINT_FILL,
-    WATER: COLOR_WATER
+    WATER: COLOR_WATER,
 }
 
 const LINE_PATH_CONFIG = {
@@ -34,102 +34,102 @@ const mapSettings = {
     backgroundColor: COLORS.LANDSCAPE,
     mapTypeControl: false,
     zoomControlOptions: {
-        style: 'SMALL',
+        style: "SMALL",
     },
     zoom: 15,
     styles: [
         {
-          featureType: 'landscape',
-          stylers: [
-              { hue: COLORS.LANDSCAPE },
-              { saturation: 100 },
-              { lightness: 100 },
-              { gamma: 0 }
-          ]
+            featureType: "landscape",
+            stylers: [
+                { hue: COLORS.LANDSCAPE },
+                { saturation: 100 },
+                { lightness: 100 },
+                { gamma: 0 },
+            ],
         },
         {
-            featureType: 'poi',
+            featureType: "poi",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-            featureType: 'road.highway',
+            featureType: "road.highway",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-            featureType: 'road.arterial',
+            featureType: "road.arterial",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-            featureType: 'road.local',
+            featureType: "road.local",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-            featureType: 'transit',
+            featureType: "transit",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-            featureType: 'administrative.province',
+            featureType: "administrative.province",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-            featureType: 'administrative.locality',
+            featureType: "administrative.locality",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-            featureType: 'administrative.province',
+            featureType: "administrative.province",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-            featureType: 'administrative.land_parcel',
+            featureType: "administrative.land_parcel",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-            featureType: 'administrative.neighborhood',
+            featureType: "administrative.neighborhood",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-            featureType: 'administrative.country',
-            elementType: 'geometry.stroke',
+            featureType: "administrative.country",
+            elementType: "geometry.stroke",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-            featureType: 'administrative',
-            elementType: 'labels',
+            featureType: "administrative",
+            elementType: "labels",
             stylers: [{
-                visibility: 'off'
+                visibility: "off",
             }],
         },
         {
-          featureType: 'water',
-          stylers: [
-              { hue: COLORS.WATER },
-              { saturation: -63.2 },
-              { lightness: 38 },
-              { gamma: 1 }
-          ]
-        }
+            featureType: "water",
+            stylers: [
+                { hue: COLORS.WATER },
+                { saturation: -63.2 },
+                { lightness: 38 },
+                { gamma: 1 },
+            ],
+        },
     ],
 }
 

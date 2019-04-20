@@ -14,6 +14,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "test": "vue-cli-service test:unit",
     "deploy": "sh deploy.sh"
   },
   "dependencies": {
@@ -56,7 +57,12 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "comma-dangle": ["error", "always-multiline"],
+      "semi": ["error", "never"],
+      "quotes": ["error", "double"],
+      "indent": ["error", 4]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

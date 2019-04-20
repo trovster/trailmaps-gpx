@@ -1,12 +1,14 @@
-@font-face {
-    font-family: "DIN Next";
-    font-weight: 700;
-    font-style: normal;
-    src: url("https://fonts.shopifycdn.com/din_next/dinnext_n7.57888b0b2051a4dba7d02aad7ca64db99eca3cf1.woff2?h1=dHJhaWxtYXBzLmNvLnVr&h2=Y3ljbGluZ3ByaW50cy5jby51aw&hmac=aee4c435df61e442d0e27ec103df917fd5e32faa7705431b2e261288e6b6a60c")
-            format("woff2"),
-        url("https://fonts.shopifycdn.com/din_next/dinnext_n7.8ca52ee0f403ce0c89c90387f16284e4637c1b10.woff?h1=dHJhaWxtYXBzLmNvLnVr&h2=Y3ljbGluZ3ByaW50cy5jby51aw&hmac=70510815ffc6a5df6c3bb26b2975aae027be121faac299a6b760340a5c7d23cb")
-            format("woff");
-}
+// @font-face {
+//     font-family: "DIN Next";
+//     font-weight: 700;
+//     font-style: normal;
+//     src: url("https://fonts.shopifycdn.com/din_next/dinnext_n7.57888b0b2051a4dba7d02aad7ca64db99eca3cf1.woff2?h1=dHJhaWxtYXBzLmNvLnVr&h2=Y3ljbGluZ3ByaW50cy5jby51aw&hmac=aee4c435df61e442d0e27ec103df917fd5e32faa7705431b2e261288e6b6a60c")
+//             format("woff2"),
+//         url("https://fonts.shopifycdn.com/din_next/dinnext_n7.8ca52ee0f403ce0c89c90387f16284e4637c1b10.woff?h1=dHJhaWxtYXBzLmNvLnVr&h2=Y3ljbGluZ3ByaW50cy5jby51aw&hmac=70510815ffc6a5df6c3bb26b2975aae027be121faac299a6b760340a5c7d23cb")
+//             format("woff");
+// }
+
+@import "reset-css";
 
 body {
     padding: 0;
@@ -59,5 +61,36 @@ p {
         border: 0 solid #e8e9eb;
         border-width: 1px 0 0;
         background: transparent;
+    }
+}
+
+.avatar {
+    margin-bottom: 15px;
+    border-radius: 100%;
+}
+.button {
+    display: inline-block;
+    min-width: 170px;
+    padding: 12px; margin: 10px;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    background: #555;
+    border-radius: 3px;
+
+    &:hover,
+    &:focus,
+    &:active {
+        background-color: #222;
+    }
+}
+.button--strava {
+    color: #fff;
+    background-color: #fc4c02;
+
+    &:hover,
+    &:focus,
+    &:active {
+        background-color: #bd3902;
     }
 }

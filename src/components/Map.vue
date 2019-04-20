@@ -19,83 +19,86 @@
       :gradient="this.gradient"
       :bar-width="1"
       :grow-duration="1"
-      width="500"
-      height="150"
+      :width="500"
+      :height="150"
     ></bars>
   </div>
 </template>
 
 <script>
-import GoogleMapLoader from "./Google/Map/Loader";
-import GoogleMapLine from "./Google/Map/Line";
-import { mapSettings } from "@/config/map";
+import GoogleMapLoader from "./Google/Map/Loader"
+import GoogleMapLine from "./Google/Map/Line"
+import { mapSettings } from "@/config/map"
 
-import axios from "axios";
-import xml2js from "xml2js";
-import Bars from "vuebars";
+import axios from "axios"
+import xml2js from "xml2js"
+import Bars from "vuebars"
 
 export default {
-  name: "Map",
-  components: {
-    GoogleMapLoader,
-    GoogleMapLine,
-    Bars,
-  },
-  data() {
-    return {
-      gradient: ["#6fa8dc", "#42b983", "#2c3e50"],
-      name: "",
-      data: [],
-      lines: []
-    };
-  },
-  beforeMount() {
-    axios.get("./assets/example.gpx").then(response => {
-      new xml2js.Parser().parseString(response.data, (error, result) => {
-        const track = result.gpx.trk[0];
-        this.name = track.name[0];
-
-        for (let id in track.trkseg[0].trkpt) {
-          id = parseInt(id, 10);
-          const point = track.trkseg[0].trkpt[id];
-          const previousPoint =
-            track.trkseg[0].trkpt[id - 1] || track.trkseg[0].trkpt[0];
-
-          this.data.push(parseFloat(point.ele[0]));
-          this.lines.push({
-            id: id + 1,
-            path: [
-              {
-                lat: parseFloat(point.$.lat),
-                lng: parseFloat(point.$.lon)
-              },
-              {
-                lat: parseFloat(previousPoint.$.lat),
-                lng: parseFloat(previousPoint.$.lon)
-              }
-            ]
-          });
-        }
-      });
-    });
-  },
-  computed: {
-    mapConfig() {
-      return {
-        ...mapSettings,
-        center: this.mapCenter
-      };
+    name: "Map",
+    components: {
+        GoogleMapLoader,
+        GoogleMapLine,
+        Bars,
     },
+    data() {
+        return {
+            gradient: ["#6fa8dc", "#42b983", "#2c3e50"],
+            name: "",
+            data: [],
+            lines: [],
+        }
+    },
+    beforeMount() {
+        axios.get("./assets/example.gpx").then(response => {
+            new xml2js.Parser().parseString(response.data, (error, result) => {
+                const track = result.gpx.trk[0]
+                this.name = track.name[0]
 
-    mapCenter() {
-      return { lat: 52.780431, lng: -1.993218 };
-    }
-  }
-};
+                for (let id in track.trkseg[0].trkpt) {
+                    id = parseInt(id, 10)
+                    const point = track.trkseg[0].trkpt[id]
+                    const previousPoint =
+            track.trkseg[0].trkpt[id - 1] || track.trkseg[0].trkpt[0]
+
+                    this.data.push(parseFloat(point.ele[0]))
+                    this.lines.push({
+                        id: id + 1,
+                        path: [
+                            {
+                                lat: parseFloat(point.$.lat),
+                                lng: parseFloat(point.$.lon),
+                            },
+                            {
+                                lat: parseFloat(previousPoint.$.lat),
+                                lng: parseFloat(previousPoint.$.lon),
+                            },
+                        ],
+                    })
+                }
+            })
+        })
+    },
+    computed: {
+        mapConfig() {
+            return {
+                ...mapSettings,
+                center: this.mapCenter,
+            }
+        },
+
+        mapCenter() {
+            return {
+                lat: 52.780431,
+                lng: -1.993218,
+            }
+        },
+    },
+}
 </script>
 
-<style type="sass" scoped>
-body {
+<style lang="scss" scoped>
+html, body {
   overflow: hidden;
 }
 #map {
@@ -104,6 +107,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
+  overflow: hidden;
 }
 h1 {
   position: absolute;
