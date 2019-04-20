@@ -20,6 +20,9 @@ export default new Router({
             path: "/map",
             name: "map",
             component: Map,
+            // beforeEnter: (to, from, next) => {
+            //     // check that the authorisation is set
+            // },
         },
         {
             path: "login",

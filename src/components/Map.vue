@@ -58,8 +58,7 @@ export default {
                 for (let id in track.trkseg[0].trkpt) {
                     id = parseInt(id, 10)
                     const point = track.trkseg[0].trkpt[id]
-                    const previousPoint =
-            track.trkseg[0].trkpt[id - 1] || track.trkseg[0].trkpt[0]
+                    const previousPoint = track.trkseg[0].trkpt[id - 1] || track.trkseg[0].trkpt[0]
 
                     this.data.push(parseFloat(point.ele[0]))
                     this.lines.push({

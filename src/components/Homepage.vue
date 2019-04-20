@@ -22,7 +22,8 @@
         </div>
 
         <a :href="login()" v-if="!this.user" class="button button--strava">Login with Strava</a>
-        <a :href="map()" v-if="!this.user" class="button button--view">View example map</a>
+        <router-link :to="{ name: 'map'}" class="button button--view">View example map</router-link>
+
     </div>
 </template>
 
@@ -63,16 +64,13 @@ export default {
         login() {
             const params = {
                 "client_id": this.api.config.client_id,
-                "redirect_uri": window.location.href + "/login",
+                "redirect_uri": window.location.href + "login",
                 "response_type": "code",
                 "approval_prompt": "auto",
                 "scope": "read,activity:read",
             }
 
             return this.api.config.oauth_base + "?" + Object.keys(params).map(key => key + "=" + params[key]).join("&")
-        },
-        map() {
-            return process.env.BASE_URL + "/map"
         },
     },
 }

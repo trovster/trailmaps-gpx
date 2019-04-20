@@ -1,13 +1,13 @@
 <template>
-  <div id="app">
-    <h1>
-      <a href="/">
-        <img src="./assets/logo.png" alt="TrailMaps.co.uk GPX" title>
-      </a>
-    </h1>
+    <div id="app">
+        <h1>
+            <router-link :to="{ name: 'homepage'}">
+                <img src="./assets/logo.png" alt="TrailMaps.co.uk GPX" title>
+            </router-link>
+        </h1>
 
-    <router-view/>
-  </div>
+        <router-view/>
+    </div>
 </template>
 
 <script>
