@@ -1,10 +1,11 @@
 <template>
     <div class="page">
         <h2>Art prints for the adventurous</h2>
-        <p>Please login with Strava to create your own personalised art print.</p>
+        <p v-if="!this.authenticated">Please login with Strava to create your own personalised art print.</p>
+        <p v-if="this.authenticated">Select your activity below to create your own personalised art print.</p>
 
         <hr />
-        <div class="user" v-if="this.user">
+        <div class="user" v-if="this.authenticated && this.user">
             <img :src="this.user.profile" class="avatar" />
             <h3>Username: {{ this.user.username }}</h3>
             <p>Name: {{ this.user.firstname }} {{ this.user.lastname }}</p>
@@ -18,7 +19,7 @@
                     <li v-for="activity in this.activities" :key="activity.id" class="activity">
                         <router-link :to="{ name: 'map', params: { id: activity.id }}">
                             <span class="activity--name">{{ activity.name }}</span>
-                            <time class="activity--start">{{ activity.start_date }}</time>
+                            <time class="activity--start">{{ date(activity.start_date) }}</time>
                             <span class="activity--distance">{{ activity.distance }}</span>
                         </router-link>
                     </li>
@@ -26,7 +27,7 @@
             </div>
         </div>
 
-        <a :href="login()" v-if="!this.user" class="button button--strava">Login with Strava</a>
+        <a :href="login()" v-if="!this.authenticated" class="button button--strava">Login with Strava</a>
         <router-link :to="{ name: 'map-example'}" class="button button--view">View example map</router-link>
 
     </div>
@@ -59,7 +60,7 @@ export default {
             this.api.config.access_token = this.accessToken
 
             this.api.athlete.activities.get({
-                per_page: 5,
+                per_page: 10,
             }, (error, activities) => {
                 this.activities = activities
             })
@@ -76,6 +77,9 @@ export default {
             }
 
             return this.api.config.oauth_base + "?" + Object.keys(params).map(key => key + "=" + params[key]).join("&")
+        },
+        date(date) {
+            return new Date(date).toDateString()
         },
     },
 }
