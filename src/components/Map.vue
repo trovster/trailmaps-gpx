@@ -5,10 +5,7 @@
     <GoogleMapLoader :mapConfig="mapConfig" apiKey="AIzaSyAYKX8_TSjY6LNQFQTPFXSPlldXlQhUA0Q">
       <template slot-scope="{ google, map }">
         <GoogleMapLine
-            v-for="line in lines"
-            :key="line.id"
-            :path.sync="line.path"
-            :polyline.sync="polyline"
+            :polyline="polyline"
             :google="google"
             :map="map"
         />
@@ -31,11 +28,10 @@ import GoogleMapLoader from "./Google/Map/Loader"
 import GoogleMapLine from "./Google/Map/Line"
 
 import { mapGetters } from "vuex"
-import { mapSettings } from "@/config/map"
+import { serverBus } from "../main"
+import { mapSettings, EXAMPLE_POLYGON } from "@/config/map"
 import stravaConfig from "@/config/strava"
 
-import axios from "axios"
-import xml2js from "xml2js"
 import Bars from "vuebars"
 
 export default {
@@ -68,8 +64,8 @@ export default {
             gradient: ["#6fa8dc", "#42b983", "#2c3e50"],
             name: "",
             data: [],
-            lines: [],
             polyline: "",
+            map: null,
             api: new require("strava")({
                 client_id: stravaConfig.client_id,
                 client_secret: stravaConfig.client_secret,
@@ -80,42 +76,24 @@ export default {
         if (this.$route.params.id) {
             if (this.authenticated) {
                 this.api.config.access_token = this.accessToken
-                await this.api.activities.get(this.$route.params.id, async (error, activity) => {
+                this.api.activities.get(this.$route.params.id, (error, activity) => {
                     this.polyline = activity.map.polyline
-                    console.log(activity)
+                    this.map.setCenter({
+                        lat: activity.start_latitude,
+                        lng: activity.start_longitude,
+                    })
                 })
             } else {
                 this.$router.push("/")
             }
         } else {
-            axios.get("./assets/example.gpx").then(response => {
-                new xml2js.Parser().parseString(response.data, (error, result) => {
-                    const track = result.gpx.trk[0]
-                    this.name = track.name[0]
-
-                    for (let id in track.trkseg[0].trkpt) {
-                        id = parseInt(id, 10)
-                        const point = track.trkseg[0].trkpt[id]
-                        const previousPoint = track.trkseg[0].trkpt[id - 1] || track.trkseg[0].trkpt[0]
-
-                        this.data.push(parseFloat(point.ele[0]))
-                        this.lines.push({
-                            id: id + 1,
-                            path: [
-                                {
-                                    lat: parseFloat(point.$.lat),
-                                    lng: parseFloat(point.$.lon),
-                                },
-                                {
-                                    lat: parseFloat(previousPoint.$.lat),
-                                    lng: parseFloat(previousPoint.$.lon),
-                                },
-                            ],
-                        })
-                    }
-                })
-            })
+            this.polyline = EXAMPLE_POLYGON
         }
+    },
+    created() {
+        serverBus.$on("google-map", (map) => {
+            this.map = map
+        })
     },
 }
 </script>

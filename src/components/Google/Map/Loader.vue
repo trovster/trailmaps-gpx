@@ -9,6 +9,7 @@
 
 <script>
 import GoogleMapsApiLoader from "google-maps-api-loader"
+import { serverBus } from "../../../main"
 
 export default {
     name: "GoogleMapLoader",
@@ -25,17 +26,17 @@ export default {
     },
 
     async mounted() {
-        const googleMapApi = await GoogleMapsApiLoader({
+        this.google = await GoogleMapsApiLoader({
             apiKey: this.apiKey,
+            libraries: ["geometry"],
         })
-        this.google = googleMapApi
-        this.initializeMap()
+        this.initialize()
     },
 
     methods: {
-        initializeMap() {
-            const mapContainer = this.$refs.googleMap
-            this.map = new this.google.maps.Map(mapContainer, this.mapConfig)
+        initialize() {
+            this.map = new this.google.maps.Map(this.$refs.googleMap, this.mapConfig)
+            serverBus.$emit("google-map", this.map)
         },
     },
 }

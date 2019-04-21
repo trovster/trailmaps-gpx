@@ -12,13 +12,6 @@ export default {
             type: Object,
             required: true,
         },
-        path: {
-            type: Array,
-            required: false,
-            default: () => {
-                return []
-            },
-        },
         polyline: {
             type: String,
             required: false,
@@ -28,10 +21,21 @@ export default {
     mounted() {
         new this.google.maps.Polyline({
             clickable: false,
-            path: this.polyline ? this.google.maps.geometry.encoding.decodePath(this.polyline) : this.path,
+            path: this.google.maps.geometry.encoding.decodePath(this.polyline),
             map: this.map,
             ...LINE_PATH_CONFIG,
         })
+    },
+
+    watch: { 
+        polyline: function (value) {
+            new this.google.maps.Polyline({
+                clickable: false,
+                path: this.google.maps.geometry.encoding.decodePath(value),
+                map: this.map,
+                ...LINE_PATH_CONFIG,
+            })
+        },
     },
 }
 </script>
