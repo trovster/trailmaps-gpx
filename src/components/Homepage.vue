@@ -5,26 +5,28 @@
         <p v-if="this.authenticated">Select your activity below to create your own personalised art print.</p>
 
         <hr />
-        <div class="user" v-if="this.authenticated && this.user">
-            <img :src="this.user.profile" class="avatar" />
-            <h3>Username: {{ this.user.username }}</h3>
-            <p>Name: {{ this.user.firstname }} {{ this.user.lastname }}</p>
-            <p>City: {{ this.user.city }}</p>
-            <p>Country: {{ this.user.country }}</p>
-            <router-link :to="{ name: 'logout'}" class="logout">Logout</router-link>
 
-            <div class="activities" v-if="this.activities.length > 0">
-                <h4>Activities</h4>
-                <ul>
-                    <li v-for="activity in this.activities" :key="activity.id" class="activity">
-                        <router-link :to="{ name: 'map', params: { id: activity.id }}">
-                            <span class="activity--name">{{ activity.name }}</span>
-                            <time class="activity--start">{{ date(activity.start_date) }}</time>
-                            <span class="activity--distance">{{ activity.distance }}</span>
-                        </router-link>
-                    </li>
-                </ul>
-            </div>
+        <div class="user" v-if="this.authenticated && this.user">
+            <a :href="`https://www.strava.com/athletes/${this.user.id}`" target="_blank" class="user--profile">
+                <img :src="this.user.profile" class="avatar" :title="this.user.username" :alt="this.user.username" />
+            </a>
+            <p><strong>{{ this.user.firstname }} {{ this.user.lastname }}</strong></p>
+            <p>{{ this.user.city }}</p>
+            <p>{{ this.user.country }}</p>
+            <router-link :to="{ name: 'logout'}" class="logout">Logout</router-link>
+        </div>
+
+        <div class="activities" v-if="this.activities.length > 0">
+            <h4>Activities</h4>
+            <ul>
+                <li v-for="activity in this.activities" :key="activity.id" class="activity">
+                    <router-link :to="{ name: 'map', params: { id: activity.id }}">
+                        <span class="activity--name">{{ activity.name }}</span>
+                        <time class="activity--start">{{ date(activity.start_date) }}</time>
+                        <span class="activity--distance">{{ distance(activity.distance) }}</span>
+                    </router-link>
+                </li>
+            </ul>
         </div>
 
         <a :href="login()" v-if="!this.authenticated" class="button button--strava">Login with Strava</a>
@@ -81,17 +83,38 @@ export default {
         date(date) {
             return new Date(date).toDateString()
         },
+        distance(distance) {
+            return `${(distance / 1000).toFixed(2)} miles`
+        },
     },
 }
 </script>
 
 <style lang="scss">
-.avatar {
+.user {
     position: absolute;
     top: 15px;
     right: 55px;
-    max-width: 110px;
-    border-radius: 100%;
+    padding: 20px 0 0 125px;
+    z-index: 101;
+    text-align: left;
+
+    p {
+        margin: 0 0 5px;
+    }
+    strong {
+        font-weight: 700;
+    }
+    .user--profile {
+        display: block;
+    }
+    .avatar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        max-width: 110px;
+        border-radius: 100%;
+    }
 }
 .logout {
     font-size: 0.8em;
@@ -107,15 +130,13 @@ export default {
     }
 }
 .activities {
-    margin: 20px 0; padding: 20px 0 0;
+    margin: 20px auto; padding: 0;
     border-bottom: 1px solid #e8e9eb;
 }
 .activity {
     position: relative;
     overflow: hidden;
     clear: both;
-    margin: 0 0 10px;
-    padding: 15px 0 0;
     border-top: 1px solid #e8e9eb;
     text-align: left;
 
@@ -124,6 +145,7 @@ export default {
         overflow: hidden;
         clear: both;
         display: block;
+        padding: 15px 0 10px;
         color: #000;
         text-decoration: none;
 

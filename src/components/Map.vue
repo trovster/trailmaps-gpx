@@ -54,8 +54,8 @@ export default {
         },
         mapCenter() {
             return {
-                lat: 52.780431,
-                lng: -1.993218,
+                lat: 52.7577682,
+                lng: -2.0088744,
             }
         },
     },
