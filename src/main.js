@@ -5,7 +5,9 @@ import router from "./router"
 
 Vue.config.productionTip = false
 
-export const serverBus = new Vue({
+export const serverBus = new Vue()
+
+new Vue({
     store,
     router,
     render: h => h(App),

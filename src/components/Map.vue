@@ -13,13 +13,16 @@
     </GoogleMapLoader>
 
     <bars
-      :data="this.data"
-      :gradient="this.gradient"
-      :bar-width="1"
-      :grow-duration="1"
-      :width="500"
-      :height="150"
+        v-if="this.elevation.length > 0"
+        :data="this.elevation"
+        :gradient="this.gradient"
+        :bar-width="1"
+        :grow-duration="1"
+        :width="500"
+        :height="150"
     ></bars>
+
+    <button class="button" @click="download">Download SVG</button>
   </div>
 </template>
 
@@ -62,10 +65,11 @@ export default {
     data() {
         return {
             gradient: ["#6fa8dc", "#42b983", "#2c3e50"],
-            name: "",
-            data: [],
+            name: "example",
+            elevation: [],
             polyline: "",
             map: null,
+            google: null,
             api: new require("strava")({
                 client_id: stravaConfig.client_id,
                 client_secret: stravaConfig.client_secret,
@@ -78,6 +82,7 @@ export default {
                 this.api.config.access_token = this.accessToken
                 this.api.activities.get(this.$route.params.id, (error, activity) => {
                     this.polyline = activity.map.polyline
+                    this.name = activity.name
                     this.map.setCenter({
                         lat: activity.start_latitude,
                         lng: activity.start_longitude,
@@ -91,41 +96,114 @@ export default {
         }
     },
     created() {
-        serverBus.$on("google-map", (map) => {
+        serverBus.$on("google-map", (map, google) => {
             this.map = map
+            this.google = google
         })
+    },
+    methods: {
+        download() {
+            const props = this.convertMapToSvg()
+            const link = document.createElement("a")
+
+            const html = `<svg xmlns="http://www.w3.org/2000/svg"
+                height="1000" width="1000"
+                viewBox="${props.x} ${props.y} ${props.width} ${props.height}">
+                <path d="${props.path}" fill="none" stroke-width="0.0001" stroke="#000000" />
+            </svg>`
+
+            document.body.appendChild(link)
+            link.download = `${this.name}.svg`
+            link.href = `data:image/svg+xml;base64,${btoa(html)}`
+            link.click()
+        },
+        convertMapToSvg() {
+            const path = this.google.maps.geometry.encoding.decodePath(this.polyline)
+
+            return this.pathToSvg(path)
+        },
+        pathToSvg(path) {
+            let minX = 256
+            let minY = 256
+            let maxX = 0
+            let maxY = 0
+            let svg = []
+
+            for (let p = 0; p < path.length; ++p) {
+                const point = this.latLng2point({
+                    lat: path[p].lat(),
+                    lng: path[p].lng(),
+                })
+
+                minX = Math.min(minX, point.x)
+                minY = Math.min(minY, point.y)
+                maxX = Math.max(maxX, point.x)
+                maxY = Math.max(maxY, point.y)
+
+                svg.push([
+                    point.x,
+                    point.y,
+                ].join(","))
+            }
+
+            return {
+                path: `M${svg.join(" ")}z`,
+                x: minX,
+                y: minY,
+                width: maxX - minX,
+                height: maxY - minY,
+            }
+        },
+        latLng2point(latLng) {
+            return {
+                x: (latLng.lng + 180) * (256 / 360),
+                y: (256 / 2) - (256 * Math.log(Math.tan((Math.PI / 4) + ((latLng.lat * Math.PI / 180) / 2))) / (2 * Math.PI)),
+            }
+        },
     },
 }
 </script>
 
 <style lang="scss" scoped>
 html, body {
-  overflow: hidden;
+    overflow: hidden;
 }
 #map {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
 }
 h1 {
-  position: absolute;
-  top: 15px;
-  left: 55px;
+    position: absolute;
+    top: 15px;
+    left: 55px;
 }
 h2 {
-  position: absolute;
-  top: 55px;
-  right: 55px;
-  z-index: 100;
-  display: none;
+    position: absolute;
+    top: 55px;
+    right: 55px;
+    z-index: 100;
+    display: none;
+}
+.button {
+    position: absolute;
+    top: 20px;
+    right: 55px;
+    z-index: 101;
+    border: 0;
+    text-transform: uppercase;
+    border-radius: 6px;
+    cursor: pointer;
 }
 svg {
-  position: absolute;
-  bottom: -8px;
-  right: 0;
-  z-index: 100;
+    position: absolute;
+    bottom: -8px;
+    right: 0;
+    z-index: 100;
+    height: 500px;
+    width: 500px;
 }
 </style>

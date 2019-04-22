@@ -36,7 +36,7 @@ export default {
     methods: {
         initialize() {
             this.map = new this.google.maps.Map(this.$refs.googleMap, this.mapConfig)
-            serverBus.$emit("google-map", this.map)
+            serverBus.$emit("google-map", this.map, this.google)
         },
     },
 }

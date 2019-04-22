@@ -4,8 +4,6 @@
         <p v-if="!this.authenticated">Please login with Strava to create your own personalised art print.</p>
         <p v-if="this.authenticated">Select your activity below to create your own personalised art print.</p>
 
-        <hr />
-
         <div class="user" v-if="this.authenticated && this.user">
             <a :href="`https://www.strava.com/athletes/${this.user.id}`" target="_blank" class="user--profile">
                 <img :src="this.user.profile" class="avatar" :title="this.user.username" :alt="this.user.username" />
@@ -17,7 +15,6 @@
         </div>
 
         <div class="activities" v-if="this.activities.length > 0">
-            <h4>Activities</h4>
             <ul>
                 <li v-for="activity in this.activities" :key="activity.id" class="activity">
                     <router-link :to="{ name: 'map', params: { id: activity.id }}">
@@ -30,7 +27,7 @@
         </div>
 
         <a :href="login()" v-if="!this.authenticated" class="button button--strava">Login with Strava</a>
-        <router-link :to="{ name: 'map-example'}" class="button button--view">View example map</router-link>
+        <router-link v-if="!this.authenticated" :to="{ name: 'map-example'}" class="button button--view">View example map</router-link>
 
     </div>
 </template>
