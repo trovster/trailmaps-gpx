@@ -6,8 +6,6 @@ node_modules
 .env.local
 .env.*.local
 
-src/config/strava.js
-
 # Log files
 npm-debug.log*
 yarn-debug.log*

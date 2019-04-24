@@ -34,7 +34,6 @@
 
 <script>
 import { mapGetters } from "vuex"
-import stravaConfig from "@/config/strava"
 
 export default {
     name: "Homepage",
@@ -48,8 +47,8 @@ export default {
     data() {
         return {
             api: new require("strava")({
-                client_id: stravaConfig.client_id,
-                client_secret: stravaConfig.client_secret,
+                client_id: process.env.VUE_APP_STRAVA_CLIENT_ID,
+                client_secret: process.env.VUE_APP_STRAVA_CLIENT_SECRET,
             }),
             activities: [],
         }

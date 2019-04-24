@@ -33,7 +33,6 @@ import GoogleMapLine from "./Google/Map/Line"
 import { mapGetters } from "vuex"
 import { serverBus } from "../main"
 import { mapSettings, EXAMPLE_MAP } from "@/config/map"
-import stravaConfig from "@/config/strava"
 
 import Bars from "vuebars"
 
@@ -71,8 +70,8 @@ export default {
             map: null,
             google: null,
             api: new require("strava")({
-                client_id: stravaConfig.client_id,
-                client_secret: stravaConfig.client_secret,
+                client_id: process.env.VUE_APP_STRAVA_CLIENT_ID,
+                client_secret: process.env.VUE_APP_STRAVA_CLIENT_SECRET,
             }),
             size: 1000,
         }
