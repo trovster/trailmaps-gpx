@@ -13,11 +13,6 @@ export default new Router({
     mode: "history",
     routes: [
         {
-            path: "/",
-            name: "homepage",
-            component: Homepage,
-        },
-        {
             path: "/map-example",
             name: "map-example",
             component: Map,
@@ -39,6 +34,11 @@ export default new Router({
             path: "/logout",
             name: "logout",
             component: Logout,
+        },
+        {
+            path: "/",
+            name: "homepage",
+            component: Homepage,
         },
     ],
 })

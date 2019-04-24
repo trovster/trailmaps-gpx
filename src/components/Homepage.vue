@@ -69,7 +69,7 @@ export default {
         login() {
             const params = {
                 "client_id": this.api.config.client_id,
-                "redirect_uri": window.location.href + "login",
+                "redirect_uri": `${window.location.href}login`,
                 "response_type": "code",
                 "approval_prompt": "auto",
                 "scope": "read,activity:read",
