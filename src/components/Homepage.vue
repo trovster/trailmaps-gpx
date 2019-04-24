@@ -11,7 +11,7 @@
             <p><strong>{{ this.user.firstname }} {{ this.user.lastname }}</strong></p>
             <p>{{ this.user.city }}</p>
             <p>{{ this.user.country }}</p>
-            <router-link :to="{ name: 'logout'}" class="logout">Logout</router-link>
+            <button @click="logout()" class="logout">Logout</button>
         </div>
 
         <div class="activities" v-if="this.activities.length > 0">
@@ -26,7 +26,7 @@
             </ul>
         </div>
 
-        <a :href="login()" v-if="!this.authenticated" class="button button--strava">Login with Strava</a>
+        <a :href="this.loginHref" v-if="!this.authenticated" class="button button--strava">Login with Strava</a>
         <router-link v-if="!this.authenticated" :to="{ name: 'map-example'}" class="button button--view">View example map</router-link>
 
     </div>
@@ -34,15 +34,30 @@
 
 <script>
 import { mapGetters } from "vuex"
+import Auth from "@/mixins/Auth"
 
 export default {
     name: "Homepage",
+    mixins: [
+        Auth,
+    ],
     computed: {
         ...mapGetters({
             authenticated: "authenticated",
             accessToken: "stravaAccessToken",
             user: "user",
         }),
+        loginHref() {
+            const params = {
+                "client_id": this.api.config.client_id,
+                "redirect_uri": window.location.href,
+                "response_type": "code",
+                "approval_prompt": "auto",
+                "scope": "read,activity:read",
+            }
+
+            return this.api.config.oauth_base + "?" + Object.keys(params).map(key => key + "=" + params[key]).join("&")
+        },
     },
     data() {
         return {
@@ -51,6 +66,11 @@ export default {
                 client_secret: process.env.VUE_APP_STRAVA_CLIENT_SECRET,
             }),
             activities: [],
+        }
+    },
+    created() {
+        if (this.$route.query.code) {
+            this.login()
         }
     },
     mounted() {
@@ -65,17 +85,6 @@ export default {
         }
     },
     methods: {
-        login() {
-            const params = {
-                "client_id": this.api.config.client_id,
-                "redirect_uri": `${window.location.href}login`,
-                "response_type": "code",
-                "approval_prompt": "auto",
-                "scope": "read,activity:read",
-            }
-
-            return this.api.config.oauth_base + "?" + Object.keys(params).map(key => key + "=" + params[key]).join("&")
-        },
         date(date) {
             return new Date(date).toDateString()
         },
@@ -113,10 +122,14 @@ export default {
     }
 }
 .logout {
+    padding: 0;
     font-size: 0.8em;
     color: #aaa;
     text-transform: none;
     text-decoration: none;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
 
     &:hover,
     &:focus,
