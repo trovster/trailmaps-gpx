@@ -3,19 +3,21 @@ module.exports = {
 
     configureWebpack: {
         module: {
-            rules: [{
-                test: /\.gpx$/i,
-                use: [{
-                    loader: "file-loader",
-                }],
-            }],
+            rules: [
+                {
+                    enforce: "pre",
+                    test: /\.(js|vue)$/,
+                    loader: "eslint-loader",
+                    exclude: /node_modules/,
+                },
+            ],
         },
     },
 
     css: {
         loaderOptions: {
             sass: {
-                data: "@import \"@/scss/app.scss\";",
+                data: "@import '@/scss/app.scss';",
                 options: {
                     sourceMap: false,
                 },
