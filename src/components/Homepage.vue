@@ -11,10 +11,10 @@
             <p><strong>{{ this.user.firstname }} {{ this.user.lastname }}</strong></p>
             <p>{{ this.user.city }}</p>
             <p>{{ this.user.country }}</p>
-            <button @click="logout()" class="logout">Logout</button>
+            <button @click="doLogout()" class="logout">Logout</button>
         </div>
 
-        <div class="activities" v-if="this.activities.length > 0">
+        <div class="activities" v-show="this.activities.length > 0">
             <ul>
                 <li v-for="activity in this.activities" :key="activity.id" class="activity">
                     <router-link :to="{ name: 'map', params: { id: activity.id }}">
@@ -70,19 +70,13 @@ export default {
     },
     created() {
         if (this.$route.query.code) {
-            this.login()
+            this.login(() => {
+                this.getActivities()
+            })
         }
     },
     mounted() {
-        if (this.authenticated) {
-            this.api.config.access_token = this.accessToken
-
-            this.api.athlete.activities.get({
-                per_page: 10,
-            }, (error, activities) => {
-                this.activities = activities
-            })
-        }
+        this.getActivities()
     },
     methods: {
         date(date) {
@@ -90,6 +84,25 @@ export default {
         },
         distance(distance) {
             return `${(distance / 1000).toFixed(2)} miles`
+        },
+        doLogout() {
+            this.logout(() => {
+                this.removeActivities()
+            })
+        },
+        getActivities() {
+            if (this.authenticated) {
+                this.api.config.access_token = this.accessToken
+
+                this.api.athlete.activities.get({
+                    per_page: 10,
+                }, (error, activities) => {
+                    this.activities = activities
+                })
+            }
+        },
+        removeActivities() {
+            this.activities = []
         },
     },
 }

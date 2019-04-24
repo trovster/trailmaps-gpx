@@ -7,7 +7,7 @@ export default {
             "authenticate": "authenticate",
             "setUser": "user",
         }),
-        login() {
+        login(callback) {
             this.authorise(this.$route.query)
     
             this.api.authenticate({
@@ -20,13 +20,13 @@ export default {
                     expires_at: body.expires_at,
                     expires_in: body.expires_in,
                 })
-                this.$router.push("/")
+                callback.call()
             })
         },
-        logout() {
+        logout(callback) {
             this.setUser(null)
             this.authenticate({})
-            this.$router.push("/")
+            callback.call()
         },
     },
     computed: {

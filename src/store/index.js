@@ -22,6 +22,9 @@ const Store = new Vuex.Store({
         user(state) {
             return state.user
         },
+        activities(state) {
+            return state.activities
+        },
     },
     mutations: {
         initialiseStore(state) {
@@ -39,6 +42,9 @@ const Store = new Vuex.Store({
         },
         user(state, user) {
             state.user = user
+        },
+        activities(state, activities) {
+            state.activities = activities
         },
     },
     actions: {},
