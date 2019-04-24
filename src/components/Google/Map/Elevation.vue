@@ -25,7 +25,7 @@ export default {
     },
 
     methods: {
-        elevationReponse(elevations, status) {}
+        elevationReponse(elevations, status) {}, // eslint-disable-line
     },
 
     watch: { 

@@ -15,7 +15,10 @@
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
         "test": "vue-cli-service test:unit",
-        "deploy": "sh deploy.sh"
+        "deploy": "sh deploy.sh",
+        "docker:build": "docker build . -t trailmaps-gpx",
+        "docker:start": "docker run -d -p 81:80 --name trailmaps-gpx trailmaps-gpx",
+        "docker:stop": "docker stop trailmaps-gpx"
     },
     "dependencies": {
         "@vue/cli": "^3.6.3",

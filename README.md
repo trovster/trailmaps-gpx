@@ -21,6 +21,16 @@ npm run serve
 npm run build
 ```
 
+### Docker
+
+You can run the build and run locally using [Docker](https://www.docker.com).
+
+```
+npm run docker:build
+npm run docker:start
+npm run docker:stop
+```
+
 ### Run your tests
 
 ```

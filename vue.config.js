@@ -1,5 +1,5 @@
 module.exports = {
-    publicPath: process.env.NODE_ENV === "production" ? "/trailmaps-gpx/" : "/",
+    publicPath: process.env.ROOT_PATH,
 
     configureWebpack: {
         module: {
